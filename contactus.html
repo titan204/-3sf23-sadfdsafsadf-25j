@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" >
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us — Book Haven</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-gray-50">
+    <custom-navbar></custom-navbar>
+
+    <main class="container mx-auto px-4 py-12">
+        <!-- Hero -->
+        <section class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl p-8 text-white mb-10">
+            <div class="max-w-3xl text-left">
+                <h1 class="text-4xl md:text-5xl font-bold mb-3">Contact Us</h1>
+                <p class="text-lg mb-4">Have a question or need help? Send us a message and we'll get back to you as
+                    soon as possible.</p>
+                <a href="catalog.html"
+                    class="bg-white text-indigo-600 px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition duration-300 inline-block">Browse
+                    Catalog</a>
+            </div>
+        </section>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Contact form -->
+            <div class="md:col-span-2 bg-white p-6 rounded-xl shadow-md">
+                <h2 class="text-2xl font-bold mb-4">Send us a message</h2>
+                <form id="contactForm" class="space-y-4" action="#" method="post">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                        <input id="name" name="name" type="text" required
+                            class="mt-1 block w-full rounded-lg border-gray-200 p-3 input-focus"
+                            placeholder="Your full name">
+                    </div>
+
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                        <input id="email" name="email" type="email" required
+                            class="mt-1 block w-full rounded-lg border-gray-200 p-3 input-focus"
+                            placeholder="you@example.com">
+                    </div>
+
+                    <div>
+                        <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
+                        <textarea id="message" name="message" rows="5" required
+                            class="mt-1 block w-full rounded-lg border-gray-200 p-3 input-focus"
+                            placeholder="How can we help?"></textarea>
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <button type="submit"
+                            class="bg-indigo-600 text-white px-5 py-3 rounded-lg hover:bg-indigo-700 transition">Send
+                            Message</button>
+                        <p id="contactStatus" class="text-sm text-gray-600"></p>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Contact details & project summary -->
+            <aside class="bg-white p-6 rounded-xl shadow-md">
+                <h3 class="text-xl font-semibold mb-3">Contact Details</h3>
+                <ul class="text-gray-600 space-y-2 mb-6">
+                    <li class="flex items-center space-x-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-indigo-500" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                        <span>contact@bookhaven.com</span>
+                    </li>
+                    <li class="flex items-center space-x-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-indigo-500" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M3 5h12M9 3v2m0 4v10m-6-6h6" />
+                        </svg>
+                        <span>(123) 456-7890</span>
+                    </li>
+                    <li class="flex items-center space-x-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-indigo-500" fill="none"
+                            viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z" />
+                        </svg>
+                        <span>123 Book St, Library City</span>
+                    </li>
+                </ul>
+
+                <h4 class="text-lg font-semibold mb-2">About the project</h4>
+                <p class="text-gray-700 text-sm">From the structure of this site — catalog pages, book detail pages,
+                    purchase confirmation pages, user login/register, and an admin panel — it's clear that "Book Haven"
+                    is designed as a full-featured online bookstore. Features include a searchable catalog, detailed
+                    book pages, user accounts with cart and checkout flow, secure payments, and an admin interface to
+                    manage inventory and orders.</p>
+            </aside>
+        </div>
+    </main>
+
+    <custom-footer></custom-footer>
+
+    <script src="components/navbar.js"></script>
+    <script src="components/footer.js"></script>
+    <script src="script.js"></script>
+    <script>
+        feather.replace();
+
+        // Simple front-end form handler (no backend) — show success message and clear form
+        document.getElementById('contactForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const status = document.getElementById('contactStatus');
+            status.textContent = 'Sending...';
+            setTimeout(() => {
+                status.textContent = 'Message sent. Thank you!';
+                this.reset();
+            }, 800);
+        });
+    </script>
+</body>
+
+</html>

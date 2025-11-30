@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Details - Book Haven</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-50">
+    <custom-navbar></custom-navbar>
+
+    <main class="container mx-auto px-4 py-8">
+        <a href="catalog.html" class="inline-flex items-center text-indigo-600 hover:text-indigo-800 mb-6">
+            <i data-feather="arrow-left" class="mr-2"></i>
+            Back to Catalog
+        </a>
+        
+        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="md:flex">
+                <div class="md:w-1/3">
+                    <img src="http://static.photos/books/640x360/1" id="bookImage" alt="Book Cover" class="w-full h-full object-cover">
+                </div>
+                <div class="p-8 md:w-2/3">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h1 class="text-3xl font-bold text-gray-800 mb-2" id="bookTitle">Book Title</h1>
+                            <p class="text-xl text-gray-600 mb-4" id="bookAuthor">by Author Name</p>
+                        </div>
+                        <span class="px-3 py-1 rounded-full text-sm font-semibold" id="availabilityBadge"></span>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <span class="bg-indigo-100 text-indigo-800 text-sm font-medium px-2.5 py-0.5 rounded" id="bookCategory">Category</span>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Summary</h3>
+                        <p class="text-gray-600" id="bookSummary">Book summary goes here...</p>
+                    </div>
+                    
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <p class="text-gray-500 text-sm">Price</p>
+                            <p class="text-3xl font-bold text-indigo-600" id="bookPrice">$0.00</p>
+                        </div>
+                        <button id="buyBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-medium transition duration-300">Buy Now</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <custom-footer></custom-footer>
+
+    <script src="components/navbar.js"></script>
+    <script src="components/footer.js"></script>
+    <script src="script.js"></script>
+    <script>
+        feather.replace();
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get book ID from URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const bookId = urlParams.get('id');
+            
+            if (!bookId) {
+                window.location.href = 'catalog.html';
+                return;
+            }
+            
+            // Find the book
+            const books = JSON.parse(localStorage.getItem('books')) || [];
+            const book = books.find(b => b.id == bookId);
+            
+            if (!book) {
+                window.location.href = 'catalog.html';
+                return;
+            }
+            
+            // Populate book details
+            document.getElementById('bookTitle').textContent = book.title;
+            document.getElementById('bookAuthor').textContent = `by ${book.author}`;
+            document.getElementById('bookCategory').textContent = book.category;
+            document.getElementById('bookSummary').textContent = book.summary;
+            document.getElementById('bookPrice').textContent = `$${book.price}`;
+            
+            if (book.image) {
+                document.getElementById('bookImage').src = book.image;
+            }
+            
+            // Set availability
+            const availabilityBadge = document.getElementById('availabilityBadge');
+            if (book.available) {
+                availabilityBadge.textContent = 'Available';
+                availabilityBadge.className = 'px-3 py-1 rounded-full text-sm font-semibold bg-green-100 text-green-800';
+            } else {
+                availabilityBadge.textContent = 'Out of Stock';
+                availabilityBadge.className = 'px-3 py-1 rounded-full text-sm font-semibold bg-red-100 text-red-800';
+                document.getElementById('buyBtn').disabled = true;
+                document.getElementById('buyBtn').className = 'bg-gray-400 text-white px-6 py-3 rounded-lg font-medium cursor-not-allowed';
+            }
+            
+            // Buy button click
+            document.getElementById('buyBtn').addEventListener('click', () => {
+                if (!book.available) return;
+                
+                // Check if user is logged in
+                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+                
+                if (!currentUser) {
+                    showAlert('Please login to purchase books', 'error');
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 1500);
+                    return;
+                }
+                
+                window.location.href = `confirm-buy.html?id=${book.id}`;
+            });
+        });
+    </script>
+</body>
+</html>

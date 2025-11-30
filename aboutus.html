@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us — Book Haven</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-50">
+    <custom-navbar></custom-navbar>
+
+    <main class="container mx-auto px-4 py-12">
+        <!-- Hero -->
+        <section class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl p-8 text-white mb-10">
+            <div class="max-w-3xl text-right">
+                <h1 class="text-4xl md:text-5xl font-bold mb-3">About Us</h1>
+                <p class="text-lg mb-4">Welcome to Book Haven — your digital literary sanctuary. We strive to gather the best books from various genres in one place, providing an easy and secure shopping experience.</p>
+                <a href="catalog.html" class="bg-white text-indigo-600 px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition duration-300 inline-block">Browse Catalog</a>
+            </div>
+        </section>
+
+        <!-- Project Idea / Summary -->
+        <section class="mb-12">
+            <h2 class="text-3xl font-bold mb-4 text-gray-800 text-right">Project Idea</h2>
+            <div class="bg-white p-6 rounded-xl shadow-md text-right">
+                <p class="text-gray-700 mb-4">Through other pages like the catalog, book details page, and purchase and confirmation processes, it becomes clear that "Book Haven" is a comprehensive online bookstore project that allows users to search for books, read their details, and complete purchases via user accounts, with a dedicated admin panel to manage inventory and orders.</p>
+
+                <ul class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <li class="bg-gray-50 p-4 rounded-lg">
+                        <strong class="block text-indigo-600">Wide Collection</strong>
+                        <span class="text-gray-600">Thousands of titles across multiple categories: Literature, Fiction, History, Self-development, and more.</span>
+                    </li>
+                    <li class="bg-gray-50 p-4 rounded-lg">
+                        <strong class="block text-indigo-600">User Experience</strong>
+                        <span class="text-gray-600">User login/registration, detailed book pages, and an easy-to-use shopping cart.</span>
+                    </li>
+                    <li class="bg-gray-50 p-4 rounded-lg">
+                        <strong class="block text-indigo-600">Management & Monitoring</strong>
+                        <span class="text-gray-600">Admin interface to add/edit books and track orders.</span>
+                    </li>
+                    <li class="bg-gray-50 p-4 rounded-lg">
+                        <strong class="block text-indigo-600">Payment & Delivery</strong>
+                        <span class="text-gray-600">Secure payment methods and options for shipping and order fulfillment (shown in purchase confirmation pages).</span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- How it works -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-bold mb-4 text-gray-800 text-right">How the Website Works</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-right">
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <i data-feather="search" class="w-8 h-8 text-indigo-500 mb-3"></i>
+                    <h3 class="font-semibold mb-2">Search and Choose</h3>
+                    <p class="text-gray-600">Browse the catalog, check book ratings and descriptions, and pick what suits you.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <i data-feather="credit-card" class="w-8 h-8 text-indigo-500 mb-3"></i>
+                    <h3 class="font-semibold mb-2">Complete Payment</h3>
+                    <p class="text-gray-600">Add to cart and complete payment safely and simply.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-md">
+                    <i data-feather="truck" class="w-8 h-8 text-indigo-500 mb-3"></i>
+                    <h3 class="font-semibold mb-2">Receive Your Order</h3>
+                    <p class="text-gray-600">We process your order and ship it to your doorstep quickly.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Team / Contact -->
+        <section class="mb-12 text-right">
+            <h2 class="text-2xl font-bold mb-4 text-gray-800">Contact Us</h2>
+            <div class="bg-white p-6 rounded-xl shadow-md">
+                <p class="text-gray-700 mb-4">For any inquiries or support, email us or use the contact details in the footer.</p>
+                <a href="contactus.html" class="inline-block bg-indigo-600 text-white px-5 py-3 rounded-lg hover:bg-indigo-700 transition">Contact Us</a>
+            </div>
+        </section>
+    </main>
+
+    <custom-footer></custom-footer>
+
+    <script src="components/navbar.js"></script>
+    <script src="components/footer.js"></script>
+    <script src="script.js"></script>
+    <script>
+        feather.replace();
+    </script>
+</body>
+</html>
