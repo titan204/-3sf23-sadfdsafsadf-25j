@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
     <script src="https://unpkg.com/feather-icons"></script>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body class="bg-gray-50">
     <custom-navbar></custom-navbar>
 
@@ -17,11 +19,12 @@
             <i data-feather="arrow-left" class="mr-2"></i>
             Back to Catalog
         </a>
-        
+
         <div class="bg-white rounded-xl shadow-md overflow-hidden">
             <div class="md:flex">
                 <div class="md:w-1/3">
-                    <img src="http://static.photos/books/640x360/1" id="bookImage" alt="Book Cover" class="w-full h-full object-cover">
+                    <img src="http://static.photos/books/640x360/1" id="bookImage" alt="Book Cover"
+                        class="w-full h-full object-cover">
                 </div>
                 <div class="p-8 md:w-2/3">
                     <div class="flex justify-between items-start">
@@ -31,22 +34,32 @@
                         </div>
                         <span class="px-3 py-1 rounded-full text-sm font-semibold" id="availabilityBadge"></span>
                     </div>
-                    
+
                     <div class="mb-6">
-                        <span class="bg-indigo-100 text-indigo-800 text-sm font-medium px-2.5 py-0.5 rounded" id="bookCategory">Category</span>
+                        <span class="bg-indigo-100 text-indigo-800 text-sm font-medium px-2.5 py-0.5 rounded"
+                            id="bookCategory">Category</span>
                     </div>
-                    
+
                     <div class="mb-6">
                         <h3 class="text-lg font-semibold text-gray-800 mb-2">Summary</h3>
                         <p class="text-gray-600" id="bookSummary">Book summary goes here...</p>
                     </div>
-                    
+
                     <div class="flex items-center justify-between">
                         <div>
                             <p class="text-gray-500 text-sm">Price</p>
                             <p class="text-3xl font-bold text-indigo-600" id="bookPrice">$0.00</p>
                         </div>
-                        <button id="buyBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-medium transition duration-300">Buy Now</button>
+                        <div class="flex gap-3">
+                            <button id="addToCartBtn"
+                                class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-medium transition duration-300 flex items-center gap-2">
+                                <i data-feather="shopping-cart" class="w-5 h-5"></i>
+                                Add to Cart
+                            </button>
+                            <button id="buyBtn"
+                                class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-lg font-medium transition duration-300">Buy
+                                Now</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -60,37 +73,37 @@
     <script src="script.js"></script>
     <script>
         feather.replace();
-        
+
         document.addEventListener('DOMContentLoaded', () => {
             // Get book ID from URL
             const urlParams = new URLSearchParams(window.location.search);
             const bookId = urlParams.get('id');
-            
+
             if (!bookId) {
                 window.location.href = 'catalog.html';
                 return;
             }
-            
+
             // Find the book
             const books = JSON.parse(localStorage.getItem('books')) || [];
             const book = books.find(b => b.id == bookId);
-            
+
             if (!book) {
                 window.location.href = 'catalog.html';
                 return;
             }
-            
+
             // Populate book details
             document.getElementById('bookTitle').textContent = book.title;
             document.getElementById('bookAuthor').textContent = `by ${book.author}`;
             document.getElementById('bookCategory').textContent = book.category;
             document.getElementById('bookSummary').textContent = book.summary;
             document.getElementById('bookPrice').textContent = `$${book.price}`;
-            
+
             if (book.image) {
                 document.getElementById('bookImage').src = book.image;
             }
-            
+
             // Set availability
             const availabilityBadge = document.getElementById('availabilityBadge');
             if (book.available) {
@@ -101,15 +114,31 @@
                 availabilityBadge.className = 'px-3 py-1 rounded-full text-sm font-semibold bg-red-100 text-red-800';
                 document.getElementById('buyBtn').disabled = true;
                 document.getElementById('buyBtn').className = 'bg-gray-400 text-white px-6 py-3 rounded-lg font-medium cursor-not-allowed';
+                document.getElementById('addToCartBtn').disabled = true;
+                document.getElementById('addToCartBtn').className = 'bg-gray-400 text-white px-6 py-3 rounded-lg font-medium cursor-not-allowed flex items-center gap-2';
             }
-            
+
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+            // Add to Cart button click
+            document.getElementById('addToCartBtn').addEventListener('click', () => {
+                if (!book.available) return;
+
+                if (!currentUser) {
+                    showAlert('Please login to add items to cart', 'error');
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 1500);
+                    return;
+                }
+
+                addToCart(book, currentUser);
+            });
+
             // Buy button click
             document.getElementById('buyBtn').addEventListener('click', () => {
                 if (!book.available) return;
-                
-                // Check if user is logged in
-                const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-                
+
                 if (!currentUser) {
                     showAlert('Please login to purchase books', 'error');
                     setTimeout(() => {
@@ -117,10 +146,34 @@
                     }, 1500);
                     return;
                 }
-                
+
                 window.location.href = `confirm-buy.html?id=${book.id}`;
             });
         });
+
+        function addToCart(book, user) {
+            let cart = JSON.parse(localStorage.getItem(`cart_${user.id}`)) || {
+                items: [],
+                createdAt: new Date().toISOString()
+            };
+
+            const existingItem = cart.items.find(item => item.bookId === book.id);
+
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.items.push({
+                    bookId: book.id,
+                    quantity: 1
+                });
+            }
+
+            localStorage.setItem(`cart_${user.id}`, JSON.stringify(cart));
+            window.dispatchEvent(new Event('cartUpdated'));
+
+            showAlert('Item added to cart successfully!', 'success');
+        }
     </script>
 </body>
+
 </html>

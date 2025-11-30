@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Book Haven</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-gray-50">
+    <custom-navbar></custom-navbar>
+
+    <main class="container mx-auto px-4 py-8">
+        <div class="max-w-4xl mx-auto">
+            <h1 class="text-3xl font-bold text-gray-800 mb-8">Checkout</h1>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Checkout Form -->
+                <div class="lg:col-span-2">
+                    <div class="bg-white rounded-xl shadow-md p-8 space-y-8">
+                        <!-- Shipping Information -->
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center space-x-2">
+                                <div
+                                    class="bg-indigo-600 w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                                    1</div>
+                                <span>Shipping Information</span>
+                            </h2>
+                            <form id="shippingForm" class="space-y-4">
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="firstName" class="block text-gray-700 font-semibold mb-2">First
+                                            Name</label>
+                                        <input type="text" id="firstName"
+                                            class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition"
+                                            required>
+                                    </div>
+                                    <div>
+                                        <label for="lastName" class="block text-gray-700 font-semibold mb-2">Last
+                                            Name</label>
+                                        <input type="text" id="lastName"
+                                            class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition"
+                                            required>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label for="email" class="block text-gray-700 font-semibold mb-2">Email</label>
+                                    <input type="email" id="email"
+                                        class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition"
+                                        required>
+                                </div>
+                                <div>
+                                    <label for="phone" class="block text-gray-700 font-semibold mb-2">Phone
+                                        Number</label>
+                                    <input type="tel" id="phone"
+                                        class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition"
+                                        required>
+                                </div>
+                                <div>
+                                    <label for="address" class="block text-gray-700 font-semibold mb-2">Address</label>
+                                    <input type="text" id="address"
+                                        class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition"
+                                        required>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                    <div>
+                                        <label for="city" class="block text-gray-700 font-semibold mb-2">City</label>
+                                        <input type="text" id="city"
+                                            class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition"
+                                            required>
+                                    </div>
+                                    <div>
+                                        <label for="state"
+                                            class="block text-gray-700 font-semibold mb-2">State/Province</label>
+                                        <input type="text" id="state"
+                                            class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition"
+                                            required>
+                                    </div>
+                                    <div>
+                                        <label for="zip" class="block text-gray-700 font-semibold mb-2">ZIP/Postal
+                                            Code</label>
+                                        <input type="text" id="zip"
+                                            class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition"
+                                            required>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Payment Information -->
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center space-x-2">
+                                <div
+                                    class="bg-indigo-600 w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-sm">
+                                    2</div>
+                                <span>Payment Information</span>
+                            </h2>
+                            <form id="paymentForm" class="space-y-4">
+                                <div>
+                                    <label for="cardName" class="block text-gray-700 font-semibold mb-2">Cardholder
+                                        Name</label>
+                                    <input type="text" id="cardName"
+                                        class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition"
+                                        required>
+                                </div>
+                                <div>
+                                    <label for="cardNumber" class="block text-gray-700 font-semibold mb-2">Card
+                                        Number</label>
+                                    <input type="text" id="cardNumber"
+                                        class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition"
+                                        placeholder="4242 4242 4242 4242" maxlength="19" required>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label for="expiry" class="block text-gray-700 font-semibold mb-2">Expiry
+                                            Date</label>
+                                        <input type="text" id="expiry"
+                                            class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition"
+                                            placeholder="MM/YY" maxlength="5" required>
+                                    </div>
+                                    <div>
+                                        <label for="cvv" class="block text-gray-700 font-semibold mb-2">CVV</label>
+                                        <input type="text" id="cvv"
+                                            class="w-full px-4 py-2 border-2 border-gray-300 rounded-lg focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition"
+                                            placeholder="123" maxlength="4" required>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Terms -->
+                        <div>
+                            <label class="flex items-center space-x-3">
+                                <input type="checkbox" id="agreeTerms" class="w-4 h-4 text-indigo-600 rounded" required>
+                                <span class="text-gray-700">I agree to the <a href="#"
+                                        class="text-indigo-600 hover:underline">Terms and Conditions</a></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="lg:col-span-1">
+                    <div class="bg-white rounded-xl shadow-md p-6 sticky top-8">
+                        <h2 class="text-xl font-bold text-gray-800 mb-6">Order Summary</h2>
+
+                        <!-- Order Items -->
+                        <div id="checkoutItems" class="space-y-4 mb-6 max-h-64 overflow-y-auto">
+                            <!-- Items will be loaded here -->
+                        </div>
+
+                        <!-- Summary -->
+                        <div class="space-y-4 border-t-2 border-gray-200 pt-6 mb-6">
+                            <div class="flex justify-between text-gray-600">
+                                <span>Subtotal</span>
+                                <span id="checkoutSubtotal">$0.00</span>
+                            </div>
+                            <div class="flex justify-between text-gray-600">
+                                <span>Shipping</span>
+                                <span id="checkoutShipping">$5.00</span>
+                            </div>
+                            <div class="flex justify-between text-gray-600">
+                                <span>Tax</span>
+                                <span id="checkoutTax">$0.00</span>
+                            </div>
+                            <div class="flex justify-between font-bold text-lg border-t-2 border-gray-200 pt-4">
+                                <span>Total</span>
+                                <span id="checkoutTotal" class="text-indigo-600">$0.00</span>
+                            </div>
+                        </div>
+
+                        <button id="completeCheckout"
+                            class="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition font-semibold">
+                            <i data-feather="lock" class="inline w-5 h-5 mr-2"></i>
+                            Complete Purchase
+                        </button>
+
+                        <button id="backToCart"
+                            class="w-full mt-3 bg-gray-200 text-gray-800 py-3 rounded-lg hover:bg-gray-300 transition font-semibold">
+                            Back to Cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <custom-footer></custom-footer>
+
+    <script src="components/navbar.js"></script>
+    <script src="components/footer.js"></script>
+    <script src="script.js"></script>
+    <script>
+        feather.replace();
+
+        let currentUser = null;
+        let checkoutCart = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+            if (!currentUser) {
+                showAlert('Please login to checkout', 'error');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 1500);
+                return;
+            }
+
+            checkoutCart = JSON.parse(localStorage.getItem('checkoutCart'));
+
+            if (!checkoutCart || checkoutCart.items.length === 0) {
+                showAlert('Cart is empty', 'error');
+                setTimeout(() => {
+                    window.location.href = 'cart.html';
+                }, 1500);
+                return;
+            }
+
+            prefillForm();
+            loadCheckoutItems();
+            setupEventListeners();
+        });
+
+        function prefillForm() {
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const user = users.find(u => u.id == currentUser.id);
+
+            if (user) {
+                document.getElementById('firstName').value = user.name.split(' ')[0];
+                document.getElementById('lastName').value = user.name.split(' ').slice(1).join(' ');
+                document.getElementById('email').value = user.email;
+                document.getElementById('address').value = user.address || '';
+                document.getElementById('cardName').value = user.name;
+            }
+        }
+
+        function setupEventListeners() {
+            document.getElementById('completeCheckout').addEventListener('click', completeCheckout);
+            document.getElementById('backToCart').addEventListener('click', () => {
+                window.location.href = 'cart.html';
+            });
+
+            // Format card number
+            document.getElementById('cardNumber').addEventListener('input', (e) => {
+                let value = e.target.value.replace(/\s/g, '');
+                let formattedValue = value.match(/.{1,4}/g)?.join(' ') || value;
+                e.target.value = formattedValue;
+            });
+
+            // Format expiry
+            document.getElementById('expiry').addEventListener('input', (e) => {
+                let value = e.target.value.replace(/\D/g, '');
+                if (value.length >= 2) {
+                    value = value.slice(0, 2) + '/' + value.slice(2, 4);
+                }
+                e.target.value = value;
+            });
+
+            // Allow only numbers for CVV
+            document.getElementById('cvv').addEventListener('input', (e) => {
+                e.target.value = e.target.value.replace(/\D/g, '');
+            });
+        }
+
+        function loadCheckoutItems() {
+            const books = JSON.parse(localStorage.getItem('books')) || [];
+            const container = document.getElementById('checkoutItems');
+            let subtotal = 0;
+            let itemCount = 0;
+
+            container.innerHTML = '';
+
+            checkoutCart.items.forEach(item => {
+                const book = books.find(b => b.id == item.bookId);
+                if (!book) return;
+
+                const itemTotal = parseFloat(book.price) * item.quantity;
+                subtotal += itemTotal;
+                itemCount += item.quantity;
+
+                const itemElement = document.createElement('div');
+                itemElement.className = 'flex justify-between items-center pb-4 border-b border-gray-200 last:border-b-0';
+                itemElement.innerHTML = `
+                    <div>
+                        <p class="font-semibold text-gray-800">${book.title}</p>
+                        <p class="text-sm text-gray-500">Qty: ${item.quantity}</p>
+                    </div>
+                    <span class="font-semibold text-gray-800">$${itemTotal.toFixed(2)}</span>
+                `;
+                container.appendChild(itemElement);
+            });
+
+            const shipping = 5.00;
+            const tax = parseFloat((subtotal * 0.1).toFixed(2));
+            const total = subtotal + shipping + tax;
+
+            document.getElementById('checkoutSubtotal').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('checkoutTax').textContent = `$${tax.toFixed(2)}`;
+            document.getElementById('checkoutTotal').textContent = `$${total.toFixed(2)}`;
+        }
+
+        function completeCheckout() {
+            // Validate forms
+            const shippingForm = document.getElementById('shippingForm');
+            const paymentForm = document.getElementById('paymentForm');
+
+            if (!shippingForm.checkValidity() || !paymentForm.checkValidity()) {
+                showAlert('Please fill all required fields', 'error');
+                return;
+            }
+
+            if (!document.getElementById('agreeTerms').checked) {
+                showAlert('Please agree to Terms and Conditions', 'error');
+                return;
+            }
+
+            // Create order from cart items
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            const newOrder = {
+                id: Date.now(),
+                orderId: `ORD-${Date.now()}`,
+                userId: currentUser.id,
+                customerName: `${document.getElementById('firstName').value} ${document.getElementById('lastName').value}`,
+                total: calculateTotal(),
+                date: new Date().toISOString(),
+                status: 'pending',
+                items: checkoutCart.items
+            };
+
+            orders.push(newOrder);
+            localStorage.setItem('orders', JSON.stringify(orders));
+
+            // Save payment info
+            const paymentInfo = {
+                cardNumber: document.getElementById('cardNumber').value,
+                expiry: document.getElementById('expiry').value,
+                cvv: document.getElementById('cvv').value
+            };
+            localStorage.setItem(`payment_${currentUser.id}`, JSON.stringify(paymentInfo));
+
+            // Update book availability
+            const books = JSON.parse(localStorage.getItem('books')) || [];
+            const updatedBooks = books.map(book => {
+                const cartItem = checkoutCart.items.find(item => item.bookId === book.id);
+                if (cartItem) {
+                    return { ...book, available: false };
+                }
+                return book;
+            });
+            localStorage.setItem('books', JSON.stringify(updatedBooks));
+
+            // Clear cart
+            localStorage.removeItem(`cart_${currentUser.id}`);
+            localStorage.removeItem('checkoutCart');
+
+            // Dispatch events
+            window.dispatchEvent(new Event('orderCreated'));
+            window.dispatchEvent(new Event('cartUpdated'));
+
+            showAlert('Purchase completed successfully!', 'success');
+
+            setTimeout(() => {
+                window.location.href = 'user-profile.html';
+            }, 2000);
+        }
+
+        function calculateTotal() {
+            const books = JSON.parse(localStorage.getItem('books')) || [];
+            let subtotal = 0;
+
+            checkoutCart.items.forEach(item => {
+                const book = books.find(b => b.id == item.bookId);
+                if (book) {
+                    subtotal += parseFloat(book.price) * item.quantity;
+                }
+            });
+
+            const shipping = 5.00;
+            const tax = parseFloat((subtotal * 0.1).toFixed(2));
+            return parseFloat((subtotal + shipping + tax).toFixed(2));
+        }
+    </script>
+</body>
+
+</html>

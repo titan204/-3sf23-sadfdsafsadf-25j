@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +10,7 @@
     <script src="https://unpkg.com/feather-icons"></script>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body class="bg-gray-50">
     <custom-navbar></custom-navbar>
 
@@ -17,8 +19,11 @@
         <section class="bg-gradient-to-r from-indigo-500 to-purple-600 rounded-xl p-8 text-white mb-12">
             <div class="max-w-2xl">
                 <h1 class="text-4xl md:text-5xl font-bold mb-4">Discover Your Next Favorite Book</h1>
-                <p class="text-xl mb-6">Explore our vast collection of books across all genres and find your perfect read.</p>
-                <a href="catalog.html" class="bg-white text-indigo-600 px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition duration-300 inline-block">Browse Catalog</a>
+                <p class="text-xl mb-6">Explore our vast collection of books across all genres and find your perfect
+                    read.</p>
+                <a href="catalog.html"
+                    class="bg-white text-indigo-600 px-6 py-3 rounded-lg font-medium hover:bg-gray-100 transition duration-300 inline-block">Browse
+                    Catalog</a>
             </div>
         </section>
 
@@ -36,7 +41,8 @@
                 <div class="bg-white p-6 rounded-xl shadow-md">
                     <i data-feather="book" class="w-10 h-10 text-indigo-500 mb-4"></i>
                     <h3 class="text-xl font-semibold mb-2">Extensive Collection</h3>
-                    <p class="text-gray-600">Thousands of books across all genres from classic literature to modern bestsellers.</p>
+                    <p class="text-gray-600">Thousands of books across all genres from classic literature to modern
+                        bestsellers.</p>
                 </div>
                 <div class="bg-white p-6 rounded-xl shadow-md">
                     <i data-feather="truck" class="w-10 h-10 text-indigo-500 mb-4"></i>
@@ -59,13 +65,39 @@
     <script src="script.js"></script>
     <script>
         feather.replace();
-        // Load trending books
+        // Load trending books (top sellers from orders, or first 4 if no sales data)
         document.addEventListener('DOMContentLoaded', () => {
             const books = JSON.parse(localStorage.getItem('books')) || [];
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
             const trendingContainer = document.getElementById('trendingBooks');
-            
-            // Display the first 4 books as trending
-            books.slice(0, 4).forEach(book => {
+
+            // Calculate book sales from orders
+            const bookSales = {};
+            orders.forEach(order => {
+                if (order.items) {
+                    order.items.forEach(item => {
+                        if (!bookSales[item.bookId]) {
+                            bookSales[item.bookId] = 0;
+                        }
+                        bookSales[item.bookId] += item.quantity || 1;
+                    });
+                }
+            });
+
+            // Get top books by sales, or use first 4 if no sales
+            let topBooks = [];
+            if (Object.keys(bookSales).length > 0) {
+                topBooks = books
+                    .filter(b => bookSales[b.id] > 0)
+                    .sort((a, b) => (bookSales[b.id] || 0) - (bookSales[a.id] || 0))
+                    .slice(0, 4);
+            }
+
+            if (topBooks.length === 0) {
+                topBooks = books.slice(0, 4);
+            }
+
+            topBooks.forEach(book => {
                 trendingContainer.innerHTML += `
                     <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition duration-300">
                         <img src="${book.image || 'http://static.photos/books/320x240/1'}" alt="${book.title}" class="w-full h-48 object-cover">
@@ -85,4 +117,5 @@
         });
     </script>
 </body>
+
 </html>

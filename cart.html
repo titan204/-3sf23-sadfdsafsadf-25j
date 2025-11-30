@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart - Book Haven</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="bg-gray-50">
+    <custom-navbar></custom-navbar>
+
+    <main class="container mx-auto px-4 py-8">
+        <div class="mb-8">
+            <a href="catalog.html" class="inline-flex items-center text-indigo-600 hover:text-indigo-800">
+                <i data-feather="arrow-left" class="mr-2"></i>
+                Back to Catalog
+            </a>
+        </div>
+
+        <div class="max-w-6xl mx-auto">
+            <h1 class="text-3xl font-bold text-gray-800 mb-8">Shopping Cart</h1>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Cart Items -->
+                <div class="lg:col-span-2">
+                    <div id="emptyCartMessage" class="bg-white rounded-xl shadow-md p-12 text-center">
+                        <i data-feather="shopping-cart" class="w-16 h-16 text-gray-300 mx-auto mb-4"></i>
+                        <h2 class="text-xl font-semibold text-gray-800 mb-2">Your cart is empty</h2>
+                        <p class="text-gray-600 mb-6">Add some books to get started!</p>
+                        <a href="catalog.html"
+                            class="inline-block bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition">
+                            Continue Shopping
+                        </a>
+                    </div>
+
+                    <div id="cartItemsContainer" class="space-y-4 hidden">
+                        <!-- Cart items will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="lg:col-span-1">
+                    <div class="bg-white rounded-xl shadow-md p-6 sticky top-8">
+                        <h2 class="text-xl font-bold text-gray-800 mb-6">Order Summary</h2>
+
+                        <div id="orderSummary" class="space-y-4 mb-6">
+                            <div class="flex justify-between text-gray-600">
+                                <span>Subtotal</span>
+                                <span id="subtotal">$0.00</span>
+                            </div>
+                            <div class="flex justify-between text-gray-600">
+                                <span>Shipping</span>
+                                <span id="shipping">$0.00</span>
+                            </div>
+                            <div class="flex justify-between text-gray-600">
+                                <span>Tax</span>
+                                <span id="tax">$0.00</span>
+                            </div>
+                            <div class="border-t-2 border-gray-200 pt-4 flex justify-between font-bold text-lg">
+                                <span>Total</span>
+                                <span id="total" class="text-indigo-600">$0.00</span>
+                            </div>
+                        </div>
+
+                        <button id="checkoutBtn"
+                            class="w-full bg-indigo-600 text-white py-3 rounded-lg hover:bg-indigo-700 transition font-semibold mb-3"
+                            disabled>
+                            Proceed to Checkout
+                        </button>
+                        <button id="continueShopping"
+                            class="w-full bg-gray-200 text-gray-800 py-3 rounded-lg hover:bg-gray-300 transition font-semibold">
+                            Continue Shopping
+                        </button>
+
+                        <!-- Cart Statistics -->
+                        <div class="mt-8 pt-8 border-t-2 border-gray-200">
+                            <h3 class="font-semibold text-gray-800 mb-4">Cart Summary</h3>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Items in cart:</span>
+                                    <span id="itemsCount" class="font-semibold">0</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-gray-600">Total weight:</span>
+                                    <span id="totalWeight" class="font-semibold">0 lbs</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <custom-footer></custom-footer>
+
+    <script src="components/navbar.js"></script>
+    <script src="components/footer.js"></script>
+    <script src="script.js"></script>
+    <script>
+        feather.replace();
+
+        let currentUser = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            currentUser = JSON.parse(localStorage.getItem('currentUser'));
+
+            if (!currentUser) {
+                showAlert('Please login to view cart', 'error');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 1500);
+                return;
+            }
+
+            loadCart();
+            setupEventListeners();
+
+            // Auto-refresh cart data
+            setInterval(() => {
+                loadCart();
+            }, 2000);
+
+            // Listen for cart changes from other tabs
+            window.addEventListener('storage', (e) => {
+                if (e.key === `cart_${currentUser.id}`) {
+                    loadCart();
+                }
+            });
+        });
+
+        function setupEventListeners() {
+            document.getElementById('checkoutBtn').addEventListener('click', () => {
+                const cart = getCart();
+                if (cart.items.length === 0) {
+                    showAlert('Cart is empty', 'error');
+                    return;
+                }
+
+                // Save cart to checkout
+                localStorage.setItem('checkoutCart', JSON.stringify(cart));
+                window.location.href = 'checkout.html';
+            });
+
+            document.getElementById('continueShopping').addEventListener('click', () => {
+                window.location.href = 'catalog.html';
+            });
+        }
+
+        function getCart() {
+            const cart = JSON.parse(localStorage.getItem(`cart_${currentUser.id}`)) || {
+                items: [],
+                createdAt: new Date().toISOString()
+            };
+            return cart;
+        }
+
+        function saveCart(cart) {
+            localStorage.setItem(`cart_${currentUser.id}`, JSON.stringify(cart));
+            window.dispatchEvent(new Event('cartUpdated'));
+        }
+
+        function loadCart() {
+            const cart = getCart();
+            const books = JSON.parse(localStorage.getItem('books')) || [];
+            const container = document.getElementById('cartItemsContainer');
+            const emptyMessage = document.getElementById('emptyCartMessage');
+
+            if (cart.items.length === 0) {
+                container.classList.add('hidden');
+                emptyMessage.classList.remove('hidden');
+                updateOrderSummary(0, 0);
+                document.getElementById('checkoutBtn').disabled = true;
+                return;
+            }
+
+            container.classList.remove('hidden');
+            emptyMessage.classList.add('hidden');
+            container.innerHTML = '';
+
+            let subtotal = 0;
+
+            cart.items.forEach(item => {
+                const book = books.find(b => b.id == item.bookId);
+                if (!book) return;
+
+                const itemTotal = parseFloat(book.price) * item.quantity;
+                subtotal += itemTotal;
+
+                const itemElement = document.createElement('div');
+                itemElement.className = 'bg-white rounded-xl shadow-md p-6 flex gap-4 hover:shadow-lg transition';
+                itemElement.innerHTML = `
+                    <div class="w-20 h-32 flex-shrink-0">
+                        <img src="${book.image || 'http://static.photos/books/320x240/1'}" 
+                             alt="${book.title}" 
+                             class="w-full h-full object-cover rounded-lg">
+                    </div>
+                    <div class="flex-1 flex flex-col justify-between">
+                        <div>
+                            <h3 class="font-bold text-gray-800 text-lg">${book.title}</h3>
+                            <p class="text-gray-600 text-sm mb-2">by ${book.author}</p>
+                            <p class="text-indigo-600 font-semibold text-lg">$${book.price}</p>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-3 bg-gray-100 rounded-lg p-2">
+                                <button class="qty-btn-minus px-2 py-1 hover:bg-gray-200 rounded" 
+                                        data-item-id="${item.bookId}">
+                                    <i data-feather="minus" class="w-4 h-4"></i>
+                                </button>
+                                <span class="quantity-display w-8 text-center">${item.quantity}</span>
+                                <button class="qty-btn-plus px-2 py-1 hover:bg-gray-200 rounded" 
+                                        data-item-id="${item.bookId}">
+                                    <i data-feather="plus" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                            <span class="font-bold text-gray-800">$${itemTotal.toFixed(2)}</span>
+                            <button class="remove-btn text-red-500 hover:text-red-700 hover:bg-red-50 p-2 rounded" 
+                                    data-item-id="${item.bookId}">
+                                <i data-feather="trash-2" class="w-5 h-5"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                container.appendChild(itemElement);
+            });
+
+            // Setup quantity buttons
+            document.querySelectorAll('.qty-btn-plus').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const itemId = parseInt(btn.dataset.itemId);
+                    updateQuantity(itemId, 1);
+                });
+            });
+
+            document.querySelectorAll('.qty-btn-minus').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const itemId = parseInt(btn.dataset.itemId);
+                    updateQuantity(itemId, -1);
+                });
+            });
+
+            // Setup remove buttons
+            document.querySelectorAll('.remove-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const itemId = parseInt(btn.dataset.itemId);
+                    removeFromCart(itemId);
+                });
+            });
+
+            feather.replace();
+            updateOrderSummary(subtotal, cart.items.length);
+            document.getElementById('checkoutBtn').disabled = false;
+        }
+
+        function updateQuantity(bookId, change) {
+            const cart = getCart();
+            const item = cart.items.find(i => i.bookId === bookId);
+
+            if (item) {
+                item.quantity += change;
+
+                if (item.quantity <= 0) {
+                    removeFromCart(bookId);
+                } else {
+                    saveCart(cart);
+                    loadCart();
+                }
+            }
+        }
+
+        function removeFromCart(bookId) {
+            const cart = getCart();
+            cart.items = cart.items.filter(i => i.bookId !== bookId);
+            saveCart(cart);
+            loadCart();
+            showAlert('Item removed from cart', 'success');
+        }
+
+        function updateOrderSummary(subtotal, itemCount) {
+            const shipping = itemCount > 0 ? 5.00 : 0;
+            const tax = parseFloat((subtotal * 0.1).toFixed(2));
+            const total = subtotal + shipping + tax;
+
+            document.getElementById('subtotal').textContent = `$${subtotal.toFixed(2)}`;
+            document.getElementById('shipping').textContent = `$${shipping.toFixed(2)}`;
+            document.getElementById('tax').textContent = `$${tax.toFixed(2)}`;
+            document.getElementById('total').textContent = `$${total.toFixed(2)}`;
+
+            document.getElementById('itemsCount').textContent = itemCount;
+            document.getElementById('totalWeight').textContent = `${(itemCount * 1.5).toFixed(1)} lbs`;
+        }
+    </script>
+</body>
+
+</html>

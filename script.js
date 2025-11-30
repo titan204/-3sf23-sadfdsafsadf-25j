@@ -60,6 +60,11 @@ document.addEventListener('DOMContentLoaded', () => {
         ];
         localStorage.setItem('users', JSON.stringify(sampleUsers));
     }
+
+    // Initialize orders if empty
+    if (!localStorage.getItem('orders')) {
+        localStorage.setItem('orders', JSON.stringify([]));
+    }
 });
 
 // Utility functions
@@ -68,7 +73,7 @@ function showAlert(message, type = 'success') {
     alert.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg text-white ${type === 'success' ? 'bg-green-500' : 'bg-red-500'}`;
     alert.textContent = message;
     document.body.appendChild(alert);
-    
+
     setTimeout(() => {
         alert.remove();
     }, 3000);

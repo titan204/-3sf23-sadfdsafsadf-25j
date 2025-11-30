@@ -14,90 +14,258 @@
 <body class="bg-gray-50">
     <custom-navbar></custom-navbar>
 
-
-<!--    hello iam mahmoud-->
-    
-
-    <main class="container mx-auto px-4 py-8">
-        <div class="flex justify-between items-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-800">Admin Dashboard</h1>
-            <div class="flex items-center space-x-3">
-                <button id="addBookBtn"
-                    class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-300 flex items-center">
-                    <i data-feather="plus" class="mr-2"></i> Add Book
-                </button>
-                <button id="manageUsersBtn"
-                    class="bg-white text-indigo-600 px-4 py-2 rounded-lg border border-indigo-600 hover:bg-indigo-50 transition duration-300 flex items-center">
-                    <i data-feather="users" class="mr-2"></i> Manage Users
-                </button>
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-gray-800 text-white shadow-lg overflow-y-auto">
+            <div class="p-6">
+                <h2 class="text-2xl font-bold mb-8">Admin Panel</h2>
+                <nav class="space-y-2">
+                    <button onclick="switchSection('dashboard')"
+                        class="sidebar-nav-btn w-full text-left px-4 py-3 rounded-lg hover:bg-gray-700 transition flex items-center space-x-3 bg-indigo-600"
+                        data-section="dashboard">
+                        <i data-feather="home" class="w-5 h-5"></i>
+                        <span>Dashboard</span>
+                    </button>
+                    <button onclick="switchSection('books')"
+                        class="sidebar-nav-btn w-full text-left px-4 py-3 rounded-lg hover:bg-gray-700 transition flex items-center space-x-3"
+                        data-section="books">
+                        <i data-feather="book" class="w-5 h-5"></i>
+                        <span>Manage Books</span>
+                    </button>
+                    <button onclick="switchSection('users')"
+                        class="sidebar-nav-btn w-full text-left px-4 py-3 rounded-lg hover:bg-gray-700 transition flex items-center space-x-3"
+                        data-section="users">
+                        <i data-feather="users" class="w-5 h-5"></i>
+                        <span>Manage Users</span>
+                    </button>
+                    <button onclick="switchSection('orders')"
+                        class="sidebar-nav-btn w-full text-left px-4 py-3 rounded-lg hover:bg-gray-700 transition flex items-center space-x-3"
+                        data-section="orders">
+                        <i data-feather="shopping-bag" class="w-5 h-5"></i>
+                        <span>Manage Orders</span>
+                    </button>
+                    <button onclick="switchSection('complaints')"
+                        class="sidebar-nav-btn w-full text-left px-4 py-3 rounded-lg hover:bg-gray-700 transition flex items-center space-x-3"
+                        data-section="complaints">
+                        <i data-feather="message-square" class="w-5 h-5"></i>
+                        <span>Complaints</span>
+                    </button>
+                    <button onclick="switchSection('reports')"
+                        class="sidebar-nav-btn w-full text-left px-4 py-3 rounded-lg hover:bg-gray-700 transition flex items-center space-x-3"
+                        data-section="reports">
+                        <i data-feather="bar-chart-2" class="w-5 h-5"></i>
+                        <span>Sales Reports</span>
+                    </button>
+                </nav>
             </div>
-        </div>
+        </aside>
 
-        <div class="bg-white rounded-xl shadow-md overflow-hidden">
-            <div class="overflow-x-auto">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Cover</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Title</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Author</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Category</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Price</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Status</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="booksTableBody" class="bg-white divide-y divide-gray-200">
-                        <!-- Books will be loaded from JSON -->
-                    </tbody>
-                </table>
+        <!-- Main Content -->
+        <main class="flex-1 overflow-y-auto">
+            <div class="p-8">
+                <!-- Dashboard Section -->
+                <section id="dashboard-section" class="section-content">
+                    <h1 class="text-3xl font-bold text-gray-800 mb-6">Admin Dashboard</h1>
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                        <div class="bg-white p-6 rounded-xl shadow-md">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-gray-600 text-sm">Total Books</p>
+                                    <p id="totalBooks" class="text-3xl font-bold text-indigo-600">0</p>
+                                </div>
+                                <i data-feather="book" class="w-12 h-12 text-indigo-200"></i>
+                            </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-md">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-gray-600 text-sm">Total Users</p>
+                                    <p id="totalUsers" class="text-3xl font-bold text-purple-600">0</p>
+                                </div>
+                                <i data-feather="users" class="w-12 h-12 text-purple-200"></i>
+                            </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-md">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-gray-600 text-sm">Total Sales</p>
+                                    <p id="totalSales" class="text-3xl font-bold text-green-600">$0</p>
+                                </div>
+                                <i data-feather="dollar-sign" class="w-12 h-12 text-green-200"></i>
+                            </div>
+                        </div>
+                        <div class="bg-white p-6 rounded-xl shadow-md">
+                            <div class="flex items-center justify-between">
+                                <div>
+                                    <p class="text-gray-600 text-sm">Pending Complaints</p>
+                                    <p id="pendingComplaints" class="text-3xl font-bold text-orange-600">0</p>
+                                </div>
+                                <i data-feather="alert-circle" class="w-12 h-12 text-orange-200"></i>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Books Management Section -->
+                <section id="books-section" class="section-content hidden">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-3xl font-bold text-gray-800">Manage Books</h2>
+                        <button id="addBookBtn"
+                            class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition flex items-center">
+                            <i data-feather="plus" class="mr-2"></i> Add Book
+                        </button>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                            Cover</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                            Title</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                            Author</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                            Category</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                            Price</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                            Status</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                            Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="booksTableBody" class="bg-white divide-y divide-gray-200"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Users Management Section -->
+                <section id="users-section" class="section-content hidden">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-3xl font-bold text-gray-800">Manage Users</h2>
+                        <button id="addUserBtn"
+                            class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition flex items-center">
+                            <i data-feather="user-plus" class="mr-2"></i> Add User
+                        </button>
+                    </div>
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full divide-y divide-gray-200">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name
+                                        </th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                            Email</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                            Address</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Role
+                                        </th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                            Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="usersTableBody" class="bg-white divide-y divide-gray-200"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Orders Management Section -->
+                <section id="orders-section" class="section-content hidden">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">Manage Orders</h2>
+                    <div id="ordersContainer" class="space-y-6">
+                        <!-- Orders will be loaded here -->
+                    </div>
+                </section>
+
+                <!-- Complaints Management Section -->
+                <section id="complaints-section" class="section-content hidden">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6">Customer Complaints</h2>
+                    <div id="complaintsContainer" class="space-y-6">
+                        <!-- Complaints will be loaded here -->
+                    </div>
+                </section>
+
+                <!-- Reports Section -->
+                <section id="reports-section" class="section-content hidden">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-8">Sales Reports</h2>
+
+                    <div class="mb-8">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">Top Selling Books</h3>
+                        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                                Book Title</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                                Category</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                                Units Sold</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                                Revenue</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="topBooksTable" class="bg-white divide-y divide-gray-200"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-8">
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">Top Categories</h3>
+                        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                                Category</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                                Total Units Sold</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                                Total Revenue</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="topCategoriesTable" class="bg-white divide-y divide-gray-200"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">Recent Orders</h3>
+                        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                                Order ID</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                                Customer</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                                Total</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                                                Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="recentOrdersTable" class="bg-white divide-y divide-gray-200"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
             </div>
-        </div>
-    </main>
+        </main>
+    </div>
 
-    <!-- Users Management Section -->
-    <main class="container mx-auto px-4 py-6">
-        <div id="usersSection" class="bg-white rounded-xl shadow-md overflow-hidden hidden">
-            <div class="p-6 flex justify-between items-center">
-                <h2 class="text-2xl font-bold text-gray-800">Users Management</h2>
-                <button id="addUserBtn"
-                    class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-300 flex items-center">
-                    <i data-feather="user-plus" class="mr-2"></i> Add User
-                </button>
-            </div>
-
-            <div class="overflow-x-auto p-6">
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Name</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Email</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Address</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Role</th>
-                            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="usersTableBody" class="bg-white divide-y divide-gray-200">
-                        <!-- Users will be loaded here -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </main>
-
-    <!-- Add/Edit Book Modal -->
+    <!-- Book Modal -->
     <div id="bookModal" class="fixed inset-0 z-50 hidden">
         <div class="modal-backdrop absolute inset-0"></div>
         <div class="flex items-center justify-center min-h-screen">
@@ -105,55 +273,54 @@
                 <div class="p-6">
                     <div class="flex justify-between items-center mb-4">
                         <h3 id="modalTitle" class="text-xl font-bold text-gray-800">Add New Book</h3>
-                        <button title="add book" type="button" id="closeModal"
-                            class="text-gray-500 hover:text-gray-700">
+                        <button type="button" id="closeModal" class="text-gray-500 hover:text-gray-700"
+                            title="Close modal">
                             <i data-feather="x"></i>
                         </button>
                     </div>
-
-                    <form id="bookForm">
+                    <form id="bookForm" class="space-y-4">
                         <input type="hidden" id="bookId">
-                        <div class="mb-4">
+                        <div>
                             <label for="title" class="block text-gray-700 mb-2">Title</label>
                             <input type="text" id="title"
                                 class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 required>
                         </div>
-                        <div class="mb-4">
+                        <div>
                             <label for="author" class="block text-gray-700 mb-2">Author</label>
                             <input type="text" id="author"
                                 class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 required>
                         </div>
-                        <div class="mb-4">
+                        <div>
                             <label for="summary" class="block text-gray-700 mb-2">Summary</label>
                             <textarea id="summary"
                                 class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 rows="3" required></textarea>
                         </div>
-                        <div class="mb-4">
+                        <div>
                             <label for="category" class="block text-gray-700 mb-2">Category</label>
                             <input type="text" id="category"
                                 class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 required>
                         </div>
-                        <div class="mb-4">
+                        <div>
                             <label for="price" class="block text-gray-700 mb-2">Price</label>
                             <input type="number" step="0.01" id="price"
                                 class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 required>
                         </div>
-                        <div class="mb-4">
+                        <div>
                             <label for="image" class="block text-gray-700 mb-2">Cover Image URL</label>
                             <input type="url" id="image"
                                 class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         </div>
-                        <div class="mb-4">
+                        <div>
                             <label for="available" class="flex items-center">
                                 <input type="checkbox" id="available" class="mr-2"> Available
                             </label>
                         </div>
-                        <div class="flex justify-end space-x-4">
+                        <div class="flex justify-end space-x-4 pt-4">
                             <button type="button" id="cancelBtn"
                                 class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">Cancel</button>
                             <button type="submit"
@@ -166,7 +333,7 @@
         </div>
     </div>
 
-    <!-- Add/Edit User Modal -->
+    <!-- User Modal -->
     <div id="userModal" class="fixed inset-0 z-50 hidden">
         <div class="modal-backdrop absolute inset-0"></div>
         <div class="flex items-center justify-center min-h-screen">
@@ -174,37 +341,36 @@
                 <div class="p-6">
                     <div class="flex justify-between items-center mb-4">
                         <h3 id="userModalTitle" class="text-xl font-bold text-gray-800">Add New User</h3>
-                        <button title="close user modal" type="button" id="closeUserModal"
-                            class="text-gray-500 hover:text-gray-700">
+                        <button type="button" id="closeUserModal" class="text-gray-500 hover:text-gray-700"
+                            title="Close modal">
                             <i data-feather="x"></i>
                         </button>
                     </div>
-
-                    <form id="userForm">
+                    <form id="userForm" class="space-y-4">
                         <input type="hidden" id="userId">
-                        <div class="mb-4">
+                        <div>
                             <label for="userName" class="block text-gray-700 mb-2">Name</label>
                             <input type="text" id="userName"
                                 class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 required>
                         </div>
-                        <div class="mb-4">
+                        <div>
                             <label for="userEmail" class="block text-gray-700 mb-2">Email</label>
                             <input type="email" id="userEmail"
                                 class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
                                 required>
                         </div>
-                        <div class="mb-4">
+                        <div>
                             <label for="userPassword" class="block text-gray-700 mb-2">Password</label>
                             <input type="password" id="userPassword"
                                 class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         </div>
-                        <div class="mb-4">
+                        <div>
                             <label for="userAddress" class="block text-gray-700 mb-2">Address</label>
                             <input type="text" id="userAddress"
                                 class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         </div>
-                        <div class="mb-4">
+                        <div>
                             <label for="userRole" class="block text-gray-700 mb-2">Role</label>
                             <select id="userRole"
                                 class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
@@ -212,18 +378,51 @@
                                 <option value="admin">Admin</option>
                             </select>
                         </div>
-                        <div class="mb-4">
+                        <div>
                             <label for="userActive" class="flex items-center">
                                 <input type="checkbox" id="userActive" class="mr-2"> Active
                             </label>
                         </div>
-
-                        <div class="flex justify-end space-x-4">
+                        <div class="flex justify-end space-x-4 pt-4">
                             <button type="button" id="cancelUserBtn"
                                 class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">Cancel</button>
                             <button type="submit"
                                 class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">Save
                                 User</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reply to Complaint Modal -->
+    <div id="replyModal" class="fixed inset-0 z-50 hidden">
+        <div class="modal-backdrop absolute inset-0"></div>
+        <div class="flex items-center justify-center min-h-screen">
+            <div class="bg-white rounded-xl shadow-xl w-full max-w-md mx-4 relative z-10">
+                <div class="p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-xl font-bold text-gray-800">Reply to Complaint</h3>
+                        <button type="button" onclick="closeReplyModal()" class="text-gray-500 hover:text-gray-700"
+                            title="Close modal">
+                            <i data-feather="x"></i>
+                        </button>
+                    </div>
+                    <form id="replyForm" class="space-y-4">
+                        <input type="hidden" id="replyComplaintId">
+                        <div>
+                            <label for="adminReply" class="block text-gray-700 mb-2">Your Reply</label>
+                            <textarea id="adminReply"
+                                class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                                rows="4" required></textarea>
+                        </div>
+                        <div class="flex justify-end space-x-4 pt-4">
+                            <button type="button" onclick="closeReplyModal()"
+                                class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">Cancel</button>
+                            <button type="submit"
+                                class="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700">Send
+                                Reply</button>
                         </div>
                     </form>
                 </div>
@@ -239,12 +438,49 @@
     <script>
         feather.replace();
 
-        // Check admin status
         if (localStorage.getItem('isAdmin') !== 'true') {
             window.location.href = 'admin-login.html';
         }
 
-        // Load books into table
+        if (!localStorage.getItem('orders')) {
+            localStorage.setItem('orders', JSON.stringify([]));
+        }
+
+        if (!localStorage.getItem('complaints')) {
+            localStorage.setItem('complaints', JSON.stringify([]));
+        }
+
+        function switchSection(section) {
+            document.querySelectorAll('.section-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`${section}-section`).classList.remove('hidden');
+
+            document.querySelectorAll('.sidebar-nav-btn').forEach(btn => {
+                btn.classList.remove('bg-indigo-600');
+            });
+            document.querySelector(`[data-section="${section}"]`).classList.add('bg-indigo-600');
+
+            if (section === 'books') loadBooks();
+            if (section === 'users') loadUsers();
+            if (section === 'orders') loadOrders();
+            if (section === 'complaints') loadComplaints();
+            if (section === 'reports') loadReports();
+            if (section === 'dashboard') updateDashboard();
+        }
+
+        function updateDashboard() {
+            const books = JSON.parse(localStorage.getItem('books')) || [];
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            const complaints = JSON.parse(localStorage.getItem('complaints')) || [];
+
+            document.getElementById('totalBooks').textContent = books.length;
+            document.getElementById('totalUsers').textContent = users.length;
+            document.getElementById('pendingComplaints').textContent = complaints.filter(c => c.status === 'pending').length;
+
+            const totalSales = orders.reduce((sum, order) => sum + parseFloat(order.total || 0), 0);
+            document.getElementById('totalSales').textContent = '$' + totalSales.toFixed(2);
+        }
+
         function loadBooks() {
             const books = JSON.parse(localStorage.getItem('books')) || [];
             const tableBody = document.getElementById('booksTableBody');
@@ -266,28 +502,17 @@
                         </span>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <button data-id="${book.id}" class="edit-btn text-indigo-600 hover:text-indigo-900 mr-4">Edit</button>
-                        <button data-id="${book.id}" class="delete-btn text-red-600 hover:text-red-900">Delete</button>
+                        <button onclick="editBook(${book.id})" class="text-indigo-600 hover:text-indigo-900 mr-4">Edit</button>
+                        <button onclick="deleteBook(${book.id})" class="text-red-600 hover:text-red-900">Delete</button>
                     </td>
                 `;
                 tableBody.appendChild(row);
             });
-
-            // Add event listeners to edit and delete buttons
-            document.querySelectorAll('.edit-btn').forEach(btn => {
-                btn.addEventListener('click', () => editBook(btn.dataset.id));
-            });
-
-            document.querySelectorAll('.delete-btn').forEach(btn => {
-                btn.addEventListener('click', () => deleteBook(btn.dataset.id));
-            });
         }
 
-        // Edit book
         function editBook(id) {
             const books = JSON.parse(localStorage.getItem('books')) || [];
             const book = books.find(b => b.id == id);
-
             if (book) {
                 document.getElementById('modalTitle').textContent = 'Edit Book';
                 document.getElementById('bookId').value = book.id;
@@ -298,23 +523,20 @@
                 document.getElementById('price').value = book.price;
                 document.getElementById('image').value = book.image || '';
                 document.getElementById('available').checked = book.available;
-
                 document.getElementById('bookModal').classList.remove('hidden');
             }
         }
 
-        // Delete book
         function deleteBook(id) {
-            if (confirm('Are you sure you want to delete this book?')) {
+            if (confirm('Delete this book?')) {
                 let books = JSON.parse(localStorage.getItem('books')) || [];
                 books = books.filter(b => b.id != id);
                 localStorage.setItem('books', JSON.stringify(books));
                 loadBooks();
-                showAlert('Book deleted successfully', 'success');
+                showAlert('Book deleted', 'success');
             }
         }
 
-        // Modal functionality
         document.getElementById('addBookBtn').addEventListener('click', () => {
             document.getElementById('modalTitle').textContent = 'Add New Book';
             document.getElementById('bookForm').reset();
@@ -331,44 +553,36 @@
             document.getElementById('bookModal').classList.add('hidden');
         });
 
-        // Form submission
         document.getElementById('bookForm').addEventListener('submit', function (e) {
             e.preventDefault();
-
             const id = document.getElementById('bookId').value || Date.now();
-            const title = document.getElementById('title').value;
-            const author = document.getElementById('author').value;
-            const summary = document.getElementById('summary').value;
-            const category = document.getElementById('category').value;
-            const price = document.getElementById('price').value;
-            const image = document.getElementById('image').value;
-            const available = document.getElementById('available').checked;
+            const book = {
+                id,
+                title: document.getElementById('title').value,
+                author: document.getElementById('author').value,
+                summary: document.getElementById('summary').value,
+                category: document.getElementById('category').value,
+                price: document.getElementById('price').value,
+                image: document.getElementById('image').value,
+                available: document.getElementById('available').checked
+            };
 
             let books = JSON.parse(localStorage.getItem('books')) || [];
-
             if (document.getElementById('bookId').value) {
-                // Update existing book
-                books = books.map(b => b.id == id ? {
-                    id, title, author, summary, category, price, image, available
-                } : b);
+                books = books.map(b => b.id == id ? book : b);
             } else {
-                // Add new book
-                books.push({
-                    id, title, author, summary, category, price, image, available
-                });
+                books.push(book);
             }
 
             localStorage.setItem('books', JSON.stringify(books));
             document.getElementById('bookModal').classList.add('hidden');
             loadBooks();
-            showAlert('Book saved successfully', 'success');
+            showAlert('Book saved', 'success');
         });
 
-        // --- Users management functions ---
         function loadUsers() {
             const users = JSON.parse(localStorage.getItem('users')) || [];
             const tbody = document.getElementById('usersTableBody');
-            if (!tbody) return;
             tbody.innerHTML = '';
 
             users.forEach(user => {
@@ -379,19 +593,11 @@
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${user.address || ''}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${user.role || 'user'}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                        <button data-id="${user.id}" class="edit-user-btn text-indigo-600 hover:text-indigo-900 mr-4">Edit</button>
-                        <button data-id="${user.id}" class="delete-user-btn text-red-600 hover:text-red-900">Delete</button>
+                        <button onclick="editUser(${user.id})" class="text-indigo-600 hover:text-indigo-900 mr-4">Edit</button>
+                        <button onclick="deleteUser(${user.id})" class="text-red-600 hover:text-red-900">Delete</button>
                     </td>
                 `;
                 tbody.appendChild(tr);
-            });
-
-            document.querySelectorAll('.edit-user-btn').forEach(btn => {
-                btn.addEventListener('click', () => editUser(btn.dataset.id));
-            });
-
-            document.querySelectorAll('.delete-user-btn').forEach(btn => {
-                btn.addEventListener('click', () => deleteUser(btn.dataset.id));
             });
         }
 
@@ -408,30 +614,19 @@
             document.getElementById('userAddress').value = user.address || '';
             document.getElementById('userRole').value = user.role || 'user';
             document.getElementById('userActive').checked = user.active !== false;
-
             document.getElementById('userModal').classList.remove('hidden');
         }
 
         function deleteUser(id) {
-            if (!confirm('Are you sure you want to delete this user?')) return;
-            let users = JSON.parse(localStorage.getItem('users')) || [];
-            users = users.filter(u => u.id != id);
-            localStorage.setItem('users', JSON.stringify(users));
-            loadUsers();
-            showAlert('User deleted successfully', 'success');
+            if (confirm('Delete this user?')) {
+                let users = JSON.parse(localStorage.getItem('users')) || [];
+                users = users.filter(u => u.id != id);
+                localStorage.setItem('users', JSON.stringify(users));
+                loadUsers();
+                showAlert('User deleted', 'success');
+            }
         }
 
-        // Manage Users button toggles users section
-        document.getElementById('manageUsersBtn').addEventListener('click', () => {
-            const section = document.getElementById('usersSection');
-            section.classList.toggle('hidden');
-            if (!section.classList.contains('hidden')) {
-                loadUsers();
-                section.scrollIntoView({ behavior: 'smooth' });
-            }
-        });
-
-        // Add user modal controls
         document.getElementById('addUserBtn').addEventListener('click', () => {
             document.getElementById('userModalTitle').textContent = 'Add New User';
             document.getElementById('userForm').reset();
@@ -448,39 +643,368 @@
             document.getElementById('userModal').classList.add('hidden');
         });
 
-        // User form submission
         document.getElementById('userForm').addEventListener('submit', function (e) {
             e.preventDefault();
             const id = document.getElementById('userId').value || Date.now();
-            const name = document.getElementById('userName').value.trim();
-            const email = document.getElementById('userEmail').value.trim();
-            const password = document.getElementById('userPassword').value;
-            const address = document.getElementById('userAddress').value.trim();
-            const role = document.getElementById('userRole').value;
-            const active = document.getElementById('userActive').checked;
+            const user = {
+                id,
+                name: document.getElementById('userName').value.trim(),
+                email: document.getElementById('userEmail').value.trim(),
+                password: document.getElementById('userPassword').value,
+                address: document.getElementById('userAddress').value.trim(),
+                role: document.getElementById('userRole').value,
+                active: document.getElementById('userActive').checked
+            };
 
-            if (!validateEmail(email)) {
-                showAlert('Please enter a valid email.', 'error');
+            if (!validateEmail(user.email)) {
+                showAlert('Invalid email', 'error');
                 return;
             }
 
             let users = JSON.parse(localStorage.getItem('users')) || [];
             if (document.getElementById('userId').value) {
-                users = users.map(u => u.id == id ? { id, name, email, password, address, role, active } : u);
+                users = users.map(u => u.id == id ? user : u);
             } else {
-                users.push({ id, name, email, password, address, role, active });
+                users.push(user);
             }
 
             localStorage.setItem('users', JSON.stringify(users));
             document.getElementById('userModal').classList.add('hidden');
             loadUsers();
-            showAlert('User saved successfully', 'success');
+            showAlert('User saved', 'success');
         });
 
-        // Initial load
+        function loadOrders() {
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            const books = JSON.parse(localStorage.getItem('books')) || [];
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const ordersContainer = document.getElementById('ordersContainer');
+            ordersContainer.innerHTML = '';
+
+            if (orders.length === 0) {
+                ordersContainer.innerHTML = '<p class="text-center text-gray-600 py-8">No orders yet</p>';
+                return;
+            }
+
+            orders.sort((a, b) => new Date(b.date) - new Date(a.date)).forEach(order => {
+                const statusColor = {
+                    pending: 'border-l-yellow-500 bg-yellow-50 hover:bg-yellow-100',
+                    processing: 'border-l-blue-500 bg-blue-50 hover:bg-blue-100',
+                    shipped: 'border-l-purple-500 bg-purple-50 hover:bg-purple-100',
+                    delivered: 'border-l-green-500 bg-green-50 hover:bg-green-100',
+                    cancelled: 'border-l-red-500 bg-red-50 hover:bg-red-100'
+                };
+
+                const statusBadge = {
+                    pending: 'bg-yellow-100 text-yellow-800',
+                    processing: 'bg-blue-100 text-blue-800',
+                    shipped: 'bg-purple-100 text-purple-800',
+                    delivered: 'bg-green-100 text-green-800',
+                    cancelled: 'bg-red-100 text-red-800'
+                };
+
+                let itemsHTML = '';
+                if (order.items) {
+                    order.items.forEach(item => {
+                        const book = books.find(b => b.id == item.bookId);
+                        itemsHTML += `
+                            <div class="flex justify-between items-center py-2 border-b last:border-b-0 px-4">
+                                <span class="text-sm">${book ? book.title : item.title}</span>
+                                <span class="text-sm text-gray-600 font-semibold">$${parseFloat(item.price).toFixed(2)}</span>
+                            </div>
+                        `;
+                    });
+                }
+
+                const user = users.find(u => u.id == order.userId);
+                const orderCard = document.createElement('div');
+                orderCard.className = `bg-white rounded-xl shadow-md hover:shadow-lg overflow-hidden p-6 border-l-4 transition-all duration-300 ${statusColor[order.status] || statusColor.pending}`;
+                orderCard.innerHTML = `
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h3 class="text-lg font-bold text-gray-800">Order <span class="text-indigo-600">${order.orderId}</span></h3>
+                            <p class="text-sm text-gray-600 mt-1">👤 ${order.customerName || 'Unknown'}</p>
+                            ${user ? `<p class="text-sm text-gray-500">📧 ${user.email}</p>` : ''}
+                            <p class="text-sm text-gray-500">📅 ${new Date(order.date).toLocaleDateString()}</p>
+                        </div>
+                        <span class="px-4 py-2 rounded-full text-sm font-semibold ${statusBadge[order.status] || 'bg-gray-100 text-gray-800'}">
+                            ${order.status.charAt(0).toUpperCase() + order.status.slice(1)}
+                        </span>
+                    </div>
+                    <div class="bg-gray-50 rounded-lg mb-4">
+                        ${itemsHTML}
+                    </div>
+                    <div class="flex justify-between items-center pt-4 border-t-2 border-gray-200">
+                        <div>
+                            <p class="text-gray-600 text-sm">Total</p>
+                            <p class="text-2xl font-bold text-indigo-600">$${parseFloat(order.total).toFixed(2)}</p>
+                        </div>
+                        <select onchange="updateOrderStatus(${order.id}, this.value)" class="px-4 py-2 border-2 border-gray-300 rounded-lg text-sm font-semibold hover:border-indigo-500 focus:outline-none focus:border-indigo-600">
+                            <option value="">📊 Change Status</option>
+                            <option value="processing" ${order.status === 'processing' ? 'selected' : ''}>Processing</option>
+                            <option value="shipped" ${order.status === 'shipped' ? 'selected' : ''}>Shipped</option>
+                            <option value="delivered" ${order.status === 'delivered' ? 'selected' : ''}>Delivered</option>
+                            <option value="cancelled" ${order.status === 'cancelled' ? 'selected' : ''}>Cancelled</option>
+                        </select>
+                    </div>
+                `;
+
+                ordersContainer.appendChild(orderCard);
+            });
+
+            feather.replace();
+        }
+
+        function updateOrderStatus(orderId, newStatus) {
+            if (!newStatus) return;
+
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            const orderIndex = orders.findIndex(o => o.id == orderId);
+
+            if (orderIndex !== -1) {
+                orders[orderIndex].status = newStatus;
+                localStorage.setItem('orders', JSON.stringify(orders));
+                showAlert('Order status updated', 'success');
+                loadOrders();
+            }
+        }
+
+        function loadComplaints() {
+            const complaints = JSON.parse(localStorage.getItem('complaints')) || [];
+            const books = JSON.parse(localStorage.getItem('books')) || [];
+            const users = JSON.parse(localStorage.getItem('users')) || [];
+            const complaintsContainer = document.getElementById('complaintsContainer');
+            complaintsContainer.innerHTML = '';
+
+            if (complaints.length === 0) {
+                complaintsContainer.innerHTML = '<p class="text-center text-gray-600 py-8">No complaints yet</p>';
+                return;
+            }
+
+            const statusColors = {
+                pending: { bg: 'border-l-yellow-500 bg-yellow-50 hover:bg-yellow-100', badge: 'bg-yellow-100 text-yellow-800', icon: 'alert-circle' },
+                reviewed: { bg: 'border-l-blue-500 bg-blue-50 hover:bg-blue-100', badge: 'bg-blue-100 text-blue-800', icon: 'eye' },
+                resolved: { bg: 'border-l-green-500 bg-green-50 hover:bg-green-100', badge: 'bg-green-100 text-green-800', icon: 'check-circle' },
+                rejected: { bg: 'border-l-red-500 bg-red-50 hover:bg-red-100', badge: 'bg-red-100 text-red-800', icon: 'x-circle' }
+            };
+
+            complaints.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).forEach(complaint => {
+                const book = books.find(b => b.id == parseInt(complaint.bookId));
+                const complaintUser = users.find(u => u.id == complaint.userId);
+                const color = statusColors[complaint.status] || statusColors.pending;
+
+                const complaintCard = document.createElement('div');
+                complaintCard.className = `bg-white rounded-xl shadow-md hover:shadow-lg overflow-hidden p-6 border-l-4 transition-all duration-300 ${color.bg}`;
+                complaintCard.innerHTML = `
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="flex-1">
+                            <h3 class="text-lg font-bold text-gray-800">${complaint.title}</h3>
+                            <p class="text-sm text-gray-600 mt-1">📖 Book: <span class="font-semibold">${book ? book.title : 'Unknown'}</span></p>
+                            <p class="text-sm text-gray-600">👤 User: <span class="font-semibold">${complaintUser ? complaintUser.name : 'Unknown'}</span></p>
+                            <p class="text-sm text-gray-500">📅 ${new Date(complaint.createdAt).toLocaleDateString()}</p>
+                        </div>
+                        <span class="px-4 py-2 rounded-full text-sm font-semibold ${color.badge} flex items-center space-x-1 whitespace-nowrap">
+                            <i data-feather="${color.icon}" class="w-4 h-4"></i>
+                            <span>${complaint.status.charAt(0).toUpperCase() + complaint.status.slice(1)}</span>
+                        </span>
+                    </div>
+
+                    <div class="bg-gray-50 p-4 rounded-lg mb-4">
+                        <p class="text-sm font-bold text-gray-700 mb-2">Complaint Details:</p>
+                        <p class="text-gray-700">${complaint.description}</p>
+                    </div>
+
+                    ${complaint.adminReply ? `
+                        <div class="bg-indigo-50 p-4 rounded-lg border-l-4 border-indigo-600 mb-4">
+                            <div class="flex items-center space-x-2 mb-2">
+                                <i data-feather="message-circle" class="w-4 h-4 text-indigo-600"></i>
+                                <p class="text-sm font-bold text-indigo-700">Your Response</p>
+                            </div>
+                            <p class="text-gray-700 ml-6">${complaint.adminReply}</p>
+                        </div>
+                    ` : '<div class="bg-gray-100 p-4 rounded-lg text-center mb-4"><p class="text-gray-500 italic">⏳ No response yet</p></div>'}
+
+                    <div class="flex gap-2">
+                        <button onclick="openReplyModal(${complaint.id})" class="flex-1 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition font-semibold">
+                            ${complaint.adminReply ? '✏️ Edit Reply' : '💬 Send Reply'}
+                        </button>
+                    </div>
+                `;
+
+                complaintsContainer.appendChild(complaintCard);
+            });
+
+            feather.replace();
+        }
+
+        function openReplyModal(complaintId) {
+            document.getElementById('replyComplaintId').value = complaintId;
+            const complaints = JSON.parse(localStorage.getItem('complaints')) || [];
+            const complaint = complaints.find(c => c.id == complaintId);
+
+            if (complaint && complaint.adminReply) {
+                document.getElementById('adminReply').value = complaint.adminReply;
+            } else {
+                document.getElementById('adminReply').value = '';
+            }
+
+            document.getElementById('replyModal').classList.remove('hidden');
+        }
+
+        function closeReplyModal() {
+            document.getElementById('replyModal').classList.add('hidden');
+            document.getElementById('replyForm').reset();
+        }
+
+        document.getElementById('replyForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const complaintId = parseInt(document.getElementById('replyComplaintId').value);
+            const adminReply = document.getElementById('adminReply').value.trim();
+
+            const complaints = JSON.parse(localStorage.getItem('complaints')) || [];
+            const complaintIndex = complaints.findIndex(c => c.id == complaintId);
+
+            if (complaintIndex !== -1) {
+                complaints[complaintIndex].adminReply = adminReply;
+                complaints[complaintIndex].status = 'reviewed';
+                localStorage.setItem('complaints', JSON.stringify(complaints));
+                showAlert('Reply sent successfully', 'success');
+                closeReplyModal();
+                loadComplaints();
+            }
+        });
+
+        function loadReports() {
+            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            const books = JSON.parse(localStorage.getItem('books')) || [];
+
+            const bookSales = {};
+            orders.forEach(order => {
+                if (order.items) {
+                    order.items.forEach(item => {
+                        if (!bookSales[item.bookId]) {
+                            bookSales[item.bookId] = { units: 0, revenue: 0 };
+                        }
+                        bookSales[item.bookId].units += item.quantity || 1;
+                        bookSales[item.bookId].revenue += item.price * (item.quantity || 1);
+                    });
+                }
+            });
+
+            const topBooks = Object.keys(bookSales)
+                .map(bookId => {
+                    const book = books.find(b => b.id == bookId || b.id == parseInt(bookId));
+                    return {
+                        title: book ? book.title : 'Unknown',
+                        category: book ? book.category : 'N/A',
+                        units: bookSales[bookId].units,
+                        revenue: bookSales[bookId].revenue
+                    };
+                })
+                .sort((a, b) => b.revenue - a.revenue)
+                .slice(0, 10);
+
+            const categorySales = {};
+            topBooks.forEach(book => {
+                if (!categorySales[book.category]) {
+                    categorySales[book.category] = { units: 0, revenue: 0 };
+                }
+                categorySales[book.category].units += book.units;
+                categorySales[book.category].revenue += book.revenue;
+            });
+
+            const topCategories = Object.keys(categorySales)
+                .map(cat => ({
+                    category: cat,
+                    units: categorySales[cat].units,
+                    revenue: categorySales[cat].revenue
+                }))
+                .sort((a, b) => b.revenue - a.revenue);
+
+            const topBooksTable = document.getElementById('topBooksTable');
+            topBooksTable.innerHTML = '';
+            topBooks.forEach(book => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${book.title}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${book.category}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${book.units}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-green-600">$${book.revenue.toFixed(2)}</td>
+                `;
+                topBooksTable.appendChild(tr);
+            });
+
+            const topCategoriesTable = document.getElementById('topCategoriesTable');
+            topCategoriesTable.innerHTML = '';
+            topCategories.forEach(cat => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${cat.category}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${cat.units}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-green-600">$${cat.revenue.toFixed(2)}</td>
+                `;
+                topCategoriesTable.appendChild(tr);
+            });
+
+            const recentOrdersTable = document.getElementById('recentOrdersTable');
+            recentOrdersTable.innerHTML = '';
+            orders.slice(-10).reverse().forEach(order => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${order.orderId || order.id}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${order.customerName || 'Unknown'}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-green-600">$${parseFloat(order.total || 0).toFixed(2)}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${new Date(order.date || Date.now()).toLocaleDateString()}</td>
+                `;
+                recentOrdersTable.appendChild(tr);
+            });
+        }
+
+        let autoRefreshInterval = null;
+
         document.addEventListener('DOMContentLoaded', () => {
-            loadBooks();
-            loadUsers();
+            switchSection('dashboard');
+            feather.replace();
+
+            // Auto-refresh data every 1.5 seconds
+            autoRefreshInterval = setInterval(() => {
+                const activeSection = document.querySelector('.sidebar-nav-btn.bg-indigo-600').getAttribute('data-section');
+                if (activeSection === 'orders') {
+                    loadOrders();
+                }
+                if (activeSection === 'complaints') {
+                    loadComplaints();
+                }
+                updateDashboard();
+            }, 1500);
+
+            // Listen for order creation from other pages
+            window.addEventListener('orderCreated', () => {
+                loadOrders();
+                updateDashboard();
+            });
+
+            // Check for storage changes (another tab/window)
+            window.addEventListener('storage', (e) => {
+                if (e.key === 'orders' || e.key === 'complaints') {
+                    updateDashboard();
+                    const activeSection = document.querySelector('.sidebar-nav-btn.bg-indigo-600');
+                    if (activeSection) {
+                        const section = activeSection.getAttribute('data-section');
+                        if (section === 'orders') {
+                            loadOrders();
+                        }
+                        if (section === 'complaints') {
+                            loadComplaints();
+                        }
+                    }
+                }
+            });
+        });
+
+        window.addEventListener('beforeunload', () => {
+            if (autoRefreshInterval) clearInterval(autoRefreshInterval);
         });
     </script>
 </body>

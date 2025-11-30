@@ -152,6 +152,19 @@ class CustomNavbar extends HTMLElement {
                     font-weight: 600;
                 }
 
+                .cart-badge {
+                    animation: pulse 2s infinite;
+                }
+
+                .cart-badge:not(.hidden) {
+                    display: flex !important;
+                }
+
+                @keyframes pulse {
+                    0%, 100% { transform: scale(1); }
+                    50% { transform: scale(1.1); }
+                }
+
                 /* Responsive breakpoints */
                 @media (max-width: 767px) {
                     /* تحت 768px */
@@ -186,6 +199,13 @@ class CustomNavbar extends HTMLElement {
                             <a href="login.html" class="navbar-link">Login</a>
                             <a href="aboutus.html" class="navbar-link">About us</a>
                             <a href="contactus.html" class="navbar-link">Contact us</a>
+                            <a href="user-profile.html" class="navbar-link">Profile</a>
+                            <a href="cart.html" class="navbar-link relative" aria-label="Shopping Cart">
+                                <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                </svg>
+                                <span id="cartBadge" class="cart-badge absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center hidden">0</span>
+                            </a>
                             <a href="register.html" class="register-btn">Register</a>
                             <a href="admin-login.html" class="navbar-link" aria-label="Admin Login">
                                 <svg class="icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
@@ -204,7 +224,9 @@ class CustomNavbar extends HTMLElement {
                     <div id="mobile-menu" class="mobile-menu" aria-hidden="true">
                         <a href="index.html">Home</a>
                         <a href="catalog.html">Catalog</a>
+                        <a href="cart.html">Cart</a>
                         <a href="login.html">Login</a>
+                        <a href="user-profile.html">Profile</a>
                         <a href="register.html" class="register-link">Register</a>
                         <a href="admin-login.html">Admin</a>
                     </div>
@@ -231,6 +253,40 @@ class CustomNavbar extends HTMLElement {
                 mobileMenu.setAttribute('aria-hidden', 'true');
             }
         });
+
+        // Update cart badge
+        this.updateCartBadge();
+
+        // Listen for cart updates
+        window.addEventListener('cartUpdated', () => {
+            this.updateCartBadge();
+        });
+
+        // Check for cart updates periodically
+        setInterval(() => {
+            this.updateCartBadge();
+        }, 1000);
+    }
+
+    updateCartBadge() {
+        const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+        const badge = this.shadowRoot.getElementById('cartBadge');
+
+        if (!badge) return;
+
+        if (currentUser) {
+            const cart = JSON.parse(localStorage.getItem(`cart_${currentUser.id}`)) || { items: [] };
+            const itemCount = cart.items.reduce((sum, item) => sum + (item.quantity || 0), 0);
+
+            if (itemCount > 0) {
+                badge.textContent = itemCount;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+        } else {
+            badge.classList.add('hidden');
+        }
     }
 }
 
