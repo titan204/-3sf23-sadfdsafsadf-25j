@@ -9,6 +9,7 @@
     <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
     <script src="https://unpkg.com/feather-icons"></script>
     <link rel="stylesheet" href="style.css">
+    <script src="/books_images"></script>
 </head>
 
 <body class="bg-gray-50">
@@ -46,8 +47,8 @@
                 </div>
                 <div class="bg-white p-6 rounded-xl shadow-md">
                     <i data-feather="truck" class="w-10 h-10 text-indigo-500 mb-4"></i>
-                    <h3 class="text-xl font-semibold mb-2">Fast Delivery</h3>
-                    <p class="text-gray-600">Get your books delivered to your doorstep within 2-3 business days.</p>
+                    <h3 class="text-xl font-semibold mb-2">good prices</h3>
+                    <p class="text-gray-600">you will get a little price.</p>
                 </div>
                 <div class="bg-white p-6 rounded-xl shadow-md">
                     <i data-feather="shield" class="w-10 h-10 text-indigo-500 mb-4"></i>
@@ -67,43 +68,55 @@
         feather.replace();
         // Load trending books (top sellers from orders, or first 4 if no sales data)
         document.addEventListener('DOMContentLoaded', () => {
-            const books = JSON.parse(localStorage.getItem('books')) || [];
-            const orders = JSON.parse(localStorage.getItem('orders')) || [];
+            const books = [
+                {
+                    id: 1,
+                    title: "The Great Gatsby",
+                    author: "F. Scott Fitzgerald",
+                    description: "A novel about the American dream and the Jazz Age.",
+                    price: 10.99,
+                    image: "/image1.png", // replace with your image path
+                    available: true
+                },
+                {
+                    id: 2,
+                    title: "1984",
+                    author: "George Orwell",
+                    description: "A dystopian novel about totalitarianism and surveillance.",
+                    price: 12.99,
+                    image: "/image0.png", // replace with your image path
+                    available: false
+                },
+                {
+                    id: 3,
+                    title: "To Kill a Mockingbird",
+                    author: "Harper Lee",
+                    description: "A story about racial injustice and childhood innocence.",
+                    price: 9.99,
+                    image: "/image2.png", // replace with your image path
+                    available: true
+                },
+                {
+                    id: 4,
+                    title: "Moby Dick",
+                    author: "Herman Melville",
+                    description: "A tale of obsession and revenge on the high seas.",
+                    price: 14.99,
+                    image: "/image3.png", // replace with your image path
+                    available: false
+                }
+            ];
+
             const trendingContainer = document.getElementById('trendingBooks');
 
-            // Calculate book sales from orders
-            const bookSales = {};
-            orders.forEach(order => {
-                if (order.items) {
-                    order.items.forEach(item => {
-                        if (!bookSales[item.bookId]) {
-                            bookSales[item.bookId] = 0;
-                        }
-                        bookSales[item.bookId] += item.quantity || 1;
-                    });
-                }
-            });
-
-            // Get top books by sales, or use first 4 if no sales
-            let topBooks = [];
-            if (Object.keys(bookSales).length > 0) {
-                topBooks = books
-                    .filter(b => bookSales[b.id] > 0)
-                    .sort((a, b) => (bookSales[b.id] || 0) - (bookSales[a.id] || 0))
-                    .slice(0, 4);
-            }
-
-            if (topBooks.length === 0) {
-                topBooks = books.slice(0, 4);
-            }
-
-            topBooks.forEach(book => {
+            books.forEach(book => {
                 trendingContainer.innerHTML += `
                     <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition duration-300">
-                        <img src="${book.image || 'http://static.photos/books/320x240/1'}" alt="${book.title}" class="w-full h-48 object-cover">
+                        <img src="/books_images${book.image}" alt="${book.title}" class="w-full h-64 object-cover">
                         <div class="p-4">
                             <h3 class="font-semibold text-lg mb-1">${book.title}</h3>
                             <p class="text-gray-600 text-sm mb-2">by ${book.author}</p>
+                            <p class="text-gray-600 text-sm mb-4">${book.description}</p>
                             <div class="flex justify-between items-center">
                                 <span class="font-bold text-indigo-600">$${book.price}</span>
                                 <span class="text-sm ${book.available ? 'text-green-500' : 'text-red-500'}">
