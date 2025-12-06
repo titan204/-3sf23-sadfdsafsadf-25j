@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,18 +9,16 @@
     <script src="https://unpkg.com/feather-icons"></script>
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body class="bg-gray-50">
     <custom-navbar></custom-navbar>
 
     <main class="container mx-auto px-4 py-8">
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
             <h1 class="text-3xl font-bold text-gray-800 mb-4 md:mb-0">Book Catalog</h1>
-
+            
             <div class="flex items-center space-x-4">
                 <div class="relative">
-                    <select title="category" id="categoryFilter"
-                        class="appearance-none bg-white border border-gray-300 rounded-lg pl-4 pr-8 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <select title="category" id="categoryFilter" class="appearance-none bg-white border border-gray-300 rounded-lg pl-4 pr-8 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         <option value="">All Categories</option>
                         <option value="Fiction">Fiction</option>
                         <option value="Mystery">Mystery</option>
@@ -32,15 +29,14 @@
                     </select>
                     <i data-feather="chevron-down" class="absolute right-3 top-2.5 text-gray-400"></i>
                 </div>
-
+                
                 <div class="relative">
-                    <input type="text" id="searchInput" placeholder="Search books..."
-                        class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <input type="text" id="searchInput" placeholder="Search books..." class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
                     <i data-feather="search" class="absolute left-3 top-2.5 text-gray-400"></i>
                 </div>
             </div>
         </div>
-
+        
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="booksContainer">
             <!-- Books will be loaded from JSON -->
         </div>
@@ -53,38 +49,34 @@
     <script src="script.js"></script>
     <script>
         feather.replace();
-
-        // Load books function
+        
         function loadBooks(filter = '', category = '') {
             const books = JSON.parse(localStorage.getItem('books')) || [];
             const container = document.getElementById('booksContainer');
             container.innerHTML = '';
-
+            
             let filteredBooks = books;
-
-            // Search filter
+            
             if (filter) {
                 const searchTerm = filter.toLowerCase();
-                filteredBooks = filteredBooks.filter(book =>
-                    book.title.toLowerCase().includes(searchTerm) ||
+                filteredBooks = filteredBooks.filter(book => 
+                    book.title.toLowerCase().includes(searchTerm) || 
                     book.author.toLowerCase().includes(searchTerm)
                 );
             }
-
-            // Category filter
+            
             if (category) {
-                filteredBooks = filteredBooks.filter(book =>
+                filteredBooks = filteredBooks.filter(book => 
                     book.category === category
                 );
             }
-
-            // Add books to the page
+            
             filteredBooks.forEach(book => {
                 const bookCard = document.createElement('div');
                 bookCard.className = 'bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition duration-300';
                 bookCard.innerHTML = `
                     <a href="book-details.html?id=${book.id}">
-                        <img src="books_images/${book.image || 'default-image.png'}" alt="${book.title}" class="w-full h-48 object-cover">
+                        <img src="${book.image || 'http://static.photos/books/320x240/1'}" alt="${book.title}" class="w-full h-48 object-cover">
                         <div class="p-4">
                             <h3 class="font-semibold text-lg mb-1">${book.title}</h3>
                             <p class="text-gray-600 text-sm mb-2">by ${book.author}</p>
@@ -100,26 +92,25 @@
                 container.appendChild(bookCard);
             });
         }
-
+        
         // Search functionality
         document.getElementById('searchInput').addEventListener('input', (e) => {
             const filter = e.target.value;
             const category = document.getElementById('categoryFilter').value;
             loadBooks(filter, category);
         });
-
+        
         // Category filter
         document.getElementById('categoryFilter').addEventListener('change', (e) => {
             const category = e.target.value;
             const filter = document.getElementById('searchInput').value;
             loadBooks(filter, category);
         });
-
+        
         // Initial load
         document.addEventListener('DOMContentLoaded', () => {
             loadBooks();
         });
     </script>
 </body>
-
 </html>
